@@ -95,5 +95,19 @@ public class EmployeeController {
         PageResult pageResult =employeeService.pageQuery(employeePageQueryDTO);
         return Result.success(pageResult);
     }
+    @ApiOperation("员工状态修改")
+    @PostMapping("/status/{status}")
+    public Result<Void> modifyStatus(@PathVariable Integer status, Long id){
+        log.info("员工状态修改：{}", status);
+        // 1.这个方法只能改状态
+//        employeeService.modifyStatus(status,id);
+        //2. 修改成可以改任何字段的
+        Employee employee = Employee.builder()
+                .status(status)
+                .id(id)
+                .build();
+        employeeService.update(employee);
+        return Result.success();
+    }
 
 }
