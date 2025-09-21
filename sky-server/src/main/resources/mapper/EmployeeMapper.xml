@@ -14,32 +14,43 @@
     </select>
 
     <update id="update" parameterType="com.sky.entity.Employee">
-        update employee <set>
-        <if test="username != null and username != ''">
-            username = #{username}
-        </if>
-        <if test="name != null and name != ''">
-            name = #{name}
-        </if>
-        <if test="phone != null and password != ''">
-            phone = #{phone}
-        </if>
-        <if test="sex != null and sex != ''">
-            sex = #{sex}
-        </if>
-        <if test="idNumber != null and idNumber != ''">
-            id_number = #{idNumber}
-        </if>
-        <if test="status != null" >
-            status = #{status}
-        </if>
-        <if test="updateTime != null">
-            update_time = #{updateTime}
-        </if>
-        <if test="updateUser != null">
-            update_user = #{updateUser}
-        </if>
+        <!-- 正确结构：update 表名 SET <set标签包裹动态字段> -->
+        update employee
+        <set>
+            <!-- 1. username字段：判断非空 -->
+            <if test="username != null and username != ''">
+                username = #{username},  <!-- 逗号可加可不加，<set>会自动剔除多余逗号 -->
+            </if>
+            <!-- 2. name字段：判断非空 -->
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <!-- 3. phone字段：修复判断条件（password→phone） -->
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <!-- 4. sex字段：判断非空 -->
+            <if test="sex != null and sex != ''">
+                sex = #{sex},
+            </if>
+            <!-- 5. idNumber字段：对应数据库id_number -->
+            <if test="idNumber != null and idNumber != ''">
+                id_number = #{idNumber},
+            </if>
+            <!-- 6. status字段：只判断非null（数值类型可能为0，不能判断!= ''） -->
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <!-- 7. updateTime字段：时间类型判断非null -->
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <!-- 8. updateUser字段：判断非null（通常是用户ID，数值类型） -->
+            <if test="updateUser != null">
+                update_user = #{updateUser}  <!-- 最后一个字段可加逗号，<set>会自动处理 -->
+            </if>
+        </set>
+        <!-- where条件：根据id更新（必传，避免全表更新！） -->
         where id = #{id}
-    </set>
     </update>
 </mapper>

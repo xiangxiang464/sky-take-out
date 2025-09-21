@@ -18,6 +18,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.xmlbeans.impl.xb.xsdschema.Public;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -106,8 +107,34 @@ public class EmployeeController {
                 .status(status)
                 .id(id)
                 .build();
-        employeeService.update(employee);
+        employeeService.updateStatus(employee);
         return Result.success();
     }
+    /**
+     * 查询员工
+     * @param id
+     * @return
+     */
+    @ApiOperation("查询员工")
+    @GetMapping("/{id}")
+    public Result<Employee> getById(@PathVariable Long id){
+        log.info("根据id查询员工：{}", id);
+        Employee employee = employeeService.getById(id);
+        return Result.success(employee);
+    }
+    /**
+     * 更新员工
+     * @param employeeDTO
+     * @return
+     */
+    @ApiOperation("更新员工")
+    @PutMapping
+    public Result<Void> updateEmployee(@RequestBody EmployeeDTO employeeDTO){
+        log.info("更新员工：{}", employeeDTO);
+
+        employeeService.updateEmployee(employeeDTO);
+        return Result.success();
+    }
+
 
 }
