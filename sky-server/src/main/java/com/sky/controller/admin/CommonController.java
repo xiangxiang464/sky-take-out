@@ -31,9 +31,8 @@ public class CommonController {
             String uploadPath = aliOssUtil.upload(file.getBytes(), objectName);
             return Result.success(uploadPath);
         } catch (IOException e) {
-            log.info("文件上传失败: {}",e);
-            throw new RuntimeException(e);
+            log.info("文件上传失败: {}",e.getMessage());
         }
-
+        return Result.error("上传失败");
     }
 }
