@@ -24,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -118,6 +119,19 @@ public class DishServiceImpl implements DishService {
                 .id(id)
                 .build();
         dishMapper.update(dish);
+    }
+
+    @Override
+    public List<DishVO> getByCategoryId(Long categoryId) {
+        //根据分类id查询
+        List<Dish> dishList = dishMapper.getByCategoryId(categoryId);
+        List<DishVO> dishVOList = new ArrayList<>();
+        for (Dish dish : dishList) {
+            DishVO dishVO = new DishVO();
+            BeanUtils.copyProperties(dish, dishVO);
+            dishVOList.add(dishVO);
+        }
+        return dishVOList; // 注意方法返回值也需要改为List<DishVO>
     }
 
 
