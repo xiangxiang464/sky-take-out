@@ -12,9 +12,11 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @Slf4j
@@ -23,6 +25,8 @@ import java.util.List;
 public class DishController {
     @Autowired
     private DishService dishService;
+    @Autowired
+    private RedisTemplate<Object, Object> redisTemplate;
 
     /**
      * 新增菜品
@@ -34,6 +38,8 @@ public class DishController {
     public Result<Void> save(@RequestBody DishDTO dishDTO){
         log.info("新增菜品：{}", dishDTO);
         dishService.saveWithFlavor(dishDTO);
+        String key = "dish_" + dishDTO.getCategoryId();
+        catchClear(key);
         return Result.success();
     }
     /**
@@ -53,6 +59,8 @@ public class DishController {
     public Result<Void> deleteBatch(@RequestParam List<Long> ids){
         log.info("批量删除菜品...");
         dishService.deleteBatch(ids);
+        // 直接删除全部缓存更方便
+        catchClear("dish_*");
         return Result.success();
     }
 
@@ -76,6 +84,8 @@ public class DishController {
         log.info("修改菜品：{}", dishDTO);
         // 修改基本信息和口味信息
         dishService.updateDish(dishDTO);
+        // 直接删除全部缓存更方便
+        catchClear("dish_*");
         return Result.success();
     }
     @PostMapping("/status/{status}")
@@ -83,6 +93,8 @@ public class DishController {
     public Result<Void> updateStatus(@PathVariable Integer status, Long id){
         log.info("修改菜品状态：{}", status);
         dishService.updateStatus(status,id);
+        // 直接删除全部缓存更方便
+        catchClear("dish_*");
         return Result.success();
     }
     /**
@@ -96,6 +108,10 @@ public class DishController {
         log.info("根据分类id查询菜品选项：{}", categoryId);
         List<DishVO> list = dishService.getByCategoryId(categoryId);
         return Result.success(list);
+    }
+    private void catchClear(String patten){
+        Set<Object> keys = redisTemplate.keys(patten);
+        redisTemplate.delete(keys);
     }
 
 }
