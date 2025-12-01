@@ -36,4 +36,7 @@ public interface SetmealService {
      * @return
      */
     List<DishItemVO> getDishItemById(Long id);
+
+    // 在 SetmealService.java 接口中添加以下方法
+    List<Setmeal> listAll();
 }

@@ -60,4 +60,7 @@ public interface SetmealMapper {
      * @return
      */
     Integer countByMap(Map map);
+
+    @Select("select * from setmeal")
+    List<Setmeal> listAll();
 }

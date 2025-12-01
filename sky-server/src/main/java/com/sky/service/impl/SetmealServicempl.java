@@ -111,4 +111,9 @@ public class SetmealServicempl implements SetmealService {
     public List<DishItemVO> getDishItemById(Long id) {
         return setmealMapper.getDishItemBySetmealId(id);
     }
+    // 在 SetmealServiceImpl.java 类中添加以下实现
+    @Override
+    public List<Setmeal> listAll() {
+        return setmealMapper.listAll(); // 需要在 SetmealMapper 中添加对应方法
+    }
 }

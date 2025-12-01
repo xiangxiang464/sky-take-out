@@ -16,6 +16,7 @@ spring:
     host: ${sky.redis.host}
     port: ${sky.redis.port}
     database: ${sky.redis.database}
+    password: ${sky.redis.password}
 
 mybatis:
   #mapper配置文件
@@ -57,4 +58,12 @@ sky:
     address: ${sky.shop.address}
   baidu:
     ak: ${sky.baidu.ak}
-
+langchain4j:
+  community:
+    dashscope:
+      embedding-model:
+        model-name: text-embedding-v2
+        api-key: ${langchain4j.community.dashscope.embedding-model.api-key}
+      chat-model:
+        model-name: qwen-max
+        api-key: ${langchain4j.community.dashscope.chat-model.api-key}

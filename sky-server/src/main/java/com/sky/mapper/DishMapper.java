@@ -43,4 +43,7 @@ public interface DishMapper {
     List<Dish> getByCategoryId(Long categoryId);
 
     Integer countByMap(Map map);
+
+    @Select("select * from dish")
+    List<Dish> listAll();
 }

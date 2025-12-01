@@ -29,4 +29,6 @@ public interface DishService {
      * @return
      */
     List<DishVO> listWithFlavor(Dish dish);
+    // 在 DishService.java 接口中添加以下方法
+    List<Dish> listAll();
 }

@@ -156,5 +156,8 @@ public class DishServiceImpl implements DishService {
 
         return dishVOList;
     }
-
+    @Override
+    public List<Dish> listAll() {
+        return dishMapper.listAll(); // 需要在 DishMapper 中添加对应方法
+    }
 }
