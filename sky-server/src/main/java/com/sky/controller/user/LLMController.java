@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/llm")
+@RequestMapping("/admin/llm")
 @RequiredArgsConstructor
 public class LLMController {
 
